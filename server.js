@@ -26,4 +26,4 @@ db.once('open', () => console.log('Connect to Mongose'))
 
 app.use('/', indexRouter)
 
-app.listen(process.env.POR || 3000)
+app.listen(process.env.PORT || 3000)
