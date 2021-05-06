@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   }
   try {
     const authors = await Author.find(searchOptions)
-    res.render('authors/index', { 
+    res.render('authors/index', {
       authors: authors,
       searchOptions: req.query
     })
@@ -32,11 +32,11 @@ router.post('/', async (req, res) => {
   })
   try {
     const newAuthor = await author.save()
-    res.redirect(`/authors/${newAuthor.id}`)
+    res.redirect(`authors/${newAuthor.id}`)
   } catch {
     res.render('authors/new', {
       author: author,
-      errorMessage: 'Error Creating Author'
+      errorMessage: 'Error creating Author'
     })
   }
 })
@@ -54,11 +54,10 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-
 router.get('/:id/edit', async (req, res) => {
   try {
     const author = await Author.findById(req.params.id)
-    res.render('authors/edit', { author: author})
+    res.render('authors/edit', { author: author })
   } catch {
     res.redirect('/authors')
   }
@@ -77,9 +76,9 @@ router.put('/:id', async (req, res) => {
     } else {
       res.render('authors/edit', {
         author: author,
-        errorMessage: 'Error Updating Author'
+        errorMessage: 'Error updating Author'
       })
-    }   
+    }
   }
 })
 
@@ -88,13 +87,13 @@ router.delete('/:id', async (req, res) => {
   try {
     author = await Author.findById(req.params.id)
     await author.remove()
-    res.redirect(`/authors`)
+    res.redirect('/authors')
   } catch {
     if (author == null) {
       res.redirect('/')
     } else {
       res.redirect(`/authors/${author.id}`)
-    }   
+    }
   }
 })
 

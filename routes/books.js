@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 const Book = require('../models/book')
 const Author = require('../models/author')
-const imageMimeTypes = ['image/jpeg','image/png','images/gif']
+const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
 
 // All Books Route
 router.get('/', async (req, res) => {
-  let query = Book.find({})
+  let query = Book.find()
   if (req.query.title != null && req.query.title != '') {
     query = query.regex('title', new RegExp(req.query.title, 'i'))
   }
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 
 // New Book Route
 router.get('/new', async (req, res) => {
-    renderNewPage(res, new Book())
+  renderNewPage(res, new Book())
 })
 
 // Create Book Route
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
 
   try {
     const newBook = await book.save()
-    res.redirect('books/${newBook.id}')
+    res.redirect(`books/${newBook.id}`)
   } catch {
     renderNewPage(res, book, true)
   }
@@ -55,14 +55,13 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const book = await Book.findById(req.params.id)
-                            .populate('author')
-                            .exec()
+                           .populate('author')
+                           .exec()
     res.render('books/show', { book: book })
   } catch {
     res.redirect('/')
   }
 })
-
 
 // Edit Book Route
 router.get('/:id/edit', async (req, res) => {
